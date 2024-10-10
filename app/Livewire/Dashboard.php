@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\SalesCommission;
+use Gemini\Laravel\Facades\Gemini;
 use Livewire\Component;
-use OpenAI\Laravel\Facades\OpenAI;
 
 class Dashboard extends Component
 {
@@ -22,19 +22,23 @@ class Dashboard extends Component
         'question' => 'required|min:10'
     ];
 
-    public function generateReport() {
+    public function generateReport()
+    {
 
         $this->validate();
 
-        $fields = implode(',',SalesCommission::getColumns());
+        $fields = implode(',', SalesCommission::getColumns());
 
-        $this->config =  OpenAI::completions()->create([
-            'model' => 'text-davinci-003',
-            'prompt' => "Considerando a lista de campos ($fields), gere uma configuração json do Vega-lite v5 (sem campo de dados e com descrição) que atenda o seguinte pedido {$this->question}. Resposta:",
-            'max_tokens' => 1500
-        ])->choices[0]->text;
+        $result = Gemini::geminiFlash()
+            ->generateContent(
+                "Considerando a lista de campos ($fields), gere uma configuração json do Vega-lite v5 (sem campo de dados e com descrição) que atenda o seguinte pedido {$this->question}."
+            );
+
+        $this->config = $result->text();
 
         $this->config = str_replace("\n", "", $this->config);
+        $this->config = str_replace("```", "", $this->config);
+        $this->config = str_replace("json", "", $this->config);
         $this->config = json_decode($this->config, true);
 
         $this->dataset = ["values" => SalesCommission::inRandomOrder()->limit(100)->get()->toArray()];
