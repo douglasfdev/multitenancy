@@ -36,9 +36,7 @@ class Dashboard extends Component
 
         $this->config = $result->text();
 
-        $this->config = str_replace("\n", "", $this->config);
-        $this->config = str_replace("```", "", $this->config);
-        $this->config = str_replace("json", "", $this->config);
+        $this->config = preg_replace("/\n|```|json/", "", $this->config);
         $this->config = json_decode($this->config, true);
 
         $this->dataset = ["values" => SalesCommission::inRandomOrder()->limit(100)->get()->toArray()];
