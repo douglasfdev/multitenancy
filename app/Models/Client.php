@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\CompanyScope;
+use App\BelongsToCompany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, BelongsToCompany;
 
     protected $fillable = [
         'address_id',
@@ -37,28 +37,5 @@ class Client extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
-    }
-
-    protected static function booted()
-    {
-        static::addGlobalScope(new CompanyScope);
-
-        static::creating(function ($client) {
-            if (session()->has('company_id')) {
-                $client->company_id = session()->get('company_id');
-            }
-        });
-
-        static::updating(function ($client) {
-            if (session()->has('company_id')) {
-                $client->company_id = session()->get('company_id');
-            }
-        });
-
-        static::deleting(function ($client) {
-            if (session()->has('company_id')) {
-                $client->company_id = session()->get('company_id');
-            }
-        });
     }
 }
