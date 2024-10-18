@@ -32,8 +32,8 @@ class SellerForm extends Form
     public function save()
     {
         $emailValidation = ['required', 'email', 'unique:users'];
-        if (!empty($this->seller->user))
-        {
+
+        if (!empty($this->seller->user)) {
             $emailValidation = ['required', 'email', Rule::unique('users')->ignore($this->seller->user_id)];
         }
 
