@@ -37,6 +37,12 @@ class AppServiceProvider extends ServiceProvider
         //     URL::forceScheme($proxy_scheme);
         // }
 
+        Gate::before(function (User $user, $ability) {
+            if ($user->role_id === RoleEnum::ADMIN) {
+                return true;
+            }
+        });
+
         Gate::define('impersonate', function (User $user) {
             return $user->role_id === RoleEnum::ADMIN;
         });
