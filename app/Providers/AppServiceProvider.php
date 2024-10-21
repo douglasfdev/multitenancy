@@ -41,8 +41,8 @@ class AppServiceProvider extends ServiceProvider
             return $user->role_id === RoleEnum::ADMIN;
         });
 
-        Gate::define('leave-impersonation', function (User $user) {
-            return session()->has('impersonate') && User::find(session()->get('impersonate'))->role_id === RoleEnum::ADMIN;
+        Gate::define('leave-impersonate', function(User $user) {
+            return session()->has('impersonate') && User::find(session()->get("impersonate"))->role_id === RoleEnum::ADMIN;
         });
     }
 }
