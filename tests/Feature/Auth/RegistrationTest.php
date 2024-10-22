@@ -1,6 +1,9 @@
 <?php
 
 use App\Providers\RouteServiceProvider;
+use Database\Seeders\RoleSeeder;
+
+use function Pest\Laravel\seed;
 
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');
@@ -9,8 +12,11 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    seed(RoleSeeder::class);
+
     $response = $this->post('/register', [
-        'name' => 'Test User',
+        'company_name' => 'Company Teste',
+        'name' => 'Teste',
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',

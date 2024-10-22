@@ -10,7 +10,6 @@ use Database\Seeders\RoleSeeder;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
-
 use function Pest\Laravel\seed;
 
 beforeEach(function () {
