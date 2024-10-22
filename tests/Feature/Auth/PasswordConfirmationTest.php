@@ -6,7 +6,6 @@ use App\Models\Seller;
 use App\Models\User;
 use Database\Seeders\CompanySeeder;
 use Database\Seeders\RoleSeeder;
-
 use function Pest\Laravel\seed;
 
 beforeEach(function () {
