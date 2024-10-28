@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
+use App\Livewire\Checkout;
 use App\Livewire\Dashboard;
 use App\Livewire\Seller\Edit;
 use App\Livewire\Seller\Index;
@@ -36,10 +37,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/impersonate/{user_id}/login', [ImpersonateController::class, 'impersonate'])->middleware('can:impersonate')->name('impersonate');
     Route::get('/impersonate/leaveImpersonating', [ImpersonateController::class, 'leaveImpersonating'])->middleware('can:leave-impersonate')->name('impersonate.leaveImpersonating');
-});
 
-Route::get('/sellers', Index::class)->middleware(['auth'])->name('sellers.index');
-Route::get('/sellers/create', Edit::class)->middleware(['auth'])->name('sellers.create');
-Route::get('/sellers/{seller}/edit', Edit::class)->middleware(['auth'])->name('sellers.edit');
+    Route::get('/sellers', Index::class)->name('sellers.index');
+    Route::get('/sellers/create', Edit::class)->name('sellers.create');
+    Route::get('/sellers/{seller}/edit', Edit::class)->name('sellers.edit');
+
+    Route::get('/checkout', [Checkout::class, 'render'])->name('checkout.index');
+});
 
 require __DIR__.'/auth.php';
